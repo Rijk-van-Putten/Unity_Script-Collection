@@ -9,6 +9,11 @@ public class SmoothCameraFollow2D : MonoBehaviour
     public float zPosition = -100;
     public Vector2 offset;
 
+    private void Start()
+    {
+        transform.position = target.position;
+    }
+
     void FixedUpdate()
     {
         if (updateMode == CameraFollowUpdateMode.FixedUpdate)
@@ -29,8 +34,11 @@ public class SmoothCameraFollow2D : MonoBehaviour
 
     void Follow()
     {
-        Vector2 desiredPosition = new Vector2(target.position.x, target.position.y) + offset;
-        Vector2 smoothedPosition = Vector2.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, zPosition);
+        if (target)
+        {
+            Vector2 desiredPosition = new Vector2(target.position.x, target.position.y) + offset;
+            Vector2 smoothedPosition = Vector2.Lerp(transform.position, desiredPosition, smoothSpeed);
+            transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, zPosition);
+        }
     }
 }
