@@ -9,6 +9,13 @@ public class SmoothCameraFollow2D : MonoBehaviour
     public float zPosition = -100;
     public Vector2 offset;
 
+    [Header("Size with Velocity (optional)")]
+    public bool sizeWithVelocity = false;
+    public float defaultSize = 5.0f;
+    public float velocityMultiplier = 1.0f;
+    public new Camera camera;
+    public new Rigidbody2D rigidbody;
+
     private void Start()
     {
         transform.position = target.position;
@@ -39,6 +46,12 @@ public class SmoothCameraFollow2D : MonoBehaviour
             Vector2 desiredPosition = new Vector2(target.position.x, target.position.y) + offset;
             Vector2 smoothedPosition = Vector2.Lerp(transform.position, desiredPosition, smoothSpeed);
             transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, zPosition);
+
+            if (sizeWithVelocity)
+            {
+                float velocity = rigidbody.velocity.magnitude;
+                camera.orthographicSize = defaultSize + velocity * velocityMultiplier;
+            }
         }
     }
 }
